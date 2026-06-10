@@ -5,11 +5,13 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  id-token: write  # required for OIDC trusted publishing
+
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v4
 
@@ -19,7 +21,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22  # trusted publishing requires Node >= 22.14.0
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
@@ -39,6 +41,4 @@ jobs:
 
       - name: Publish to npm
         if: steps.version_check.outputs.skip == 'false'
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish  # OIDC token exchanged automatically — no NPM_TOKEN needed
