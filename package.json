@@ -1,0 +1,28 @@
+{
+  "name": "slidev-addon-chromadream",
+  "version": "0.1.0",
+  "description": "Slidev addon providing StepCode (step-by-step code highlighting) and two-cols-footer layout",
+  "keywords": [
+    "slidev-addon",
+    "slidev"
+  ],
+  "license": "MIT",
+  "files": [
+    "components/",
+    "layouts/"
+  ],
+  "peerDependencies": {
+    "@slidev/client": ">=0.49",
+    "@vueuse/core": ">=10",
+    "shiki": ">=1",
+    "vue": ">=3"
+  },
+  "devDependencies": {
+    "@slidev/cli": "latest",
+    "vue": "^3.5.0"
+  },
+  "scripts": {
+    "dev": "slidev slides.md",
+    "build": "slidev build slides.md"
+  }
+}

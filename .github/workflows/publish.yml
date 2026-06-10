@@ -1,0 +1,44 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - run: pnpm install
+
+      - name: Check if version is already published
+        id: version_check
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view slidev-addon-chromadream@$VERSION version 2>/dev/null; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "Version $VERSION already published — skipping."
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "Version $VERSION not found on npm — will publish."
+          fi
+
+      - name: Publish to npm
+        if: steps.version_check.outputs.skip == 'false'
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
