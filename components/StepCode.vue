@@ -44,9 +44,12 @@ function wrapWords(html: string, words: string[]): string {
 
 const html = computed(() => {
   const step = currentStep.value
-  if (step === 0 || !props.steps[step - 1])
+  if (step === 0)
     return baseHtml.value
-  return wrapWords(baseHtml.value, props.steps[step - 1])
+  const wordSet = props.steps[step - 1]
+  if (!wordSet)
+    return baseHtml.value
+  return wrapWords(baseHtml.value, wordSet)
 })
 </script>
 

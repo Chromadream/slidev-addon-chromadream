@@ -1,6 +1,6 @@
 {
   "name": "slidev-addon-chromadream",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Slidev addon providing StepCode (step-by-step code highlighting) and two-cols-footer layout",
   "keywords": [
     "slidev-addon",
@@ -9,7 +9,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_USERNAME/slidev-addon-chromadream.git"
+    "url": "https://github.com/Chromadream/slidev-addon-chromadream.git"
   },
   "files": [
     "components/",

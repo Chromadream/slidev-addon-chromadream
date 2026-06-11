@@ -101,15 +101,15 @@ Highlights specific words in a code block as you click through slides.
 Each click advances to the next **step**, highlighting a different set of words.
 
 ---
-clicks: 3
+clicks: 4
 ---
 
 # StepCode — live demo
 
 <script setup>
-const script = `#!/usr/bin/env -S copilot agent \\
-  --allow-all \\
-  --model claude-sonnet-4.6 \\
+const script = `#!/usr/bin/env -S copilot agent \
+  --allow-all \
+  --model claude-sonnet-4.6 \
   -p /angular-v22-migration`
 
 const steps = [
@@ -122,7 +122,7 @@ const steps = [
 <StepCode :code="script" :steps="steps" />
 
 <div class="mt-4 text-sm text-gray-500">
-  Click to advance → step 1 highlights the shebang, step 2 the CLI invocation, step 3 the flags
+  Click to advance → step 1 highlights the shebang, step 2 the CLI invocation, step 3 the flags, step 4 clears all highlights
 </div>
 
 ---
@@ -144,7 +144,7 @@ const steps = [
 <StepCode :code="code" :steps="steps" />
 ````
 
-Add `clicks: N` to the slide frontmatter to enable the click counter (where N = `steps.length`).
+Add `clicks: N` to the slide frontmatter. Use `N = steps.length + 1` for an extra clear step that removes all highlights (clicking past the last step resets to the raw code).
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|

@@ -38,11 +38,11 @@ Renders a syntax-highlighted code block where specific words become highlighted 
 
 ### Usage
 
-Add `clicks: N` to the slide frontmatter (where `N` equals the number of steps), then use the component:
+Add `clicks: N` to the slide frontmatter. Use `N = steps.length + 1` if you want an extra click to clear all highlights (see note below), then use the component:
 
 ````md
 ---
-clicks: 3
+clicks: 4
 ---
 
 <script setup>
@@ -60,6 +60,8 @@ const steps = [
 
 <StepCode :code="code" :steps="steps" />
 ````
+
+Clicking past the last step (when `clicks > steps.length`) clears all highlights and reverts to the raw code block. This extra click is a real Slidev click step, so other `v-click` / `v-clicks` elements on the same slide can reference it.
 
 Themes are automatically matched to the Slidev light/dark mode via Shiki's `vitesse-light` / `vitesse-dark`.
 
