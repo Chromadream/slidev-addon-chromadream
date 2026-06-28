@@ -101,8 +101,6 @@ Highlights specific words in a code block as you click through slides.
 Each click advances to the next **step**, highlighting a different set of words.
 
 ---
-clicks: 4
----
 
 # StepCode — live demo
 
@@ -122,7 +120,32 @@ const steps = [
 <StepCode :code="script" :steps="steps" />
 
 <div class="mt-4 text-sm text-gray-500">
-  Click to advance → step 1 highlights the shebang, step 2 the CLI invocation, step 3 the flags, step 4 clears all highlights
+  Click to advance → step 1 highlights the shebang, step 2 the CLI invocation, step 3 the flags; the next click advances to the following slide
+</div>
+
+---
+clicks: 4
+---
+
+# StepCode — clear-step variant
+
+<script setup>
+const clearScript = `#!/usr/bin/env -S copilot agent \
+  --allow-all \
+  --model claude-sonnet-4.6 \
+  -p /angular-v22-migration`
+
+const clearSteps = [
+  ['#!', '/usr/bin/env'],
+  ['-S', 'copilot', 'agent'],
+  ['--allow-all', '--model', 'claude-sonnet-4.6', '-p', '/angular-v22-migration'],
+]
+</script>
+
+<StepCode :code="clearScript" :steps="clearSteps" />
+
+<div class="mt-4 text-sm text-gray-500">
+  Set <code>clicks: steps.length + 1</code> in the frontmatter to override the click count → after the last step, one more click clears every highlight and reverts to the raw code, then the following click advances to the next slide
 </div>
 
 ---
@@ -144,7 +167,8 @@ const steps = [
 <StepCode :code="code" :steps="steps" />
 ````
 
-Add `clicks: N` to the slide frontmatter. Use `N = steps.length + 1` for an extra clear step that removes all highlights (clicking past the last step resets to the raw code).
+The component automatically registers one click per step, so you don't need to set
+`clicks` in the slide frontmatter — clicking past the last step advances to the next slide.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
