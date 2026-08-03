@@ -21,7 +21,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22  # trusted publishing requires Node >= 22.14.0
+          node-version: 24  # trusted publishing requires Node >= 22.14.0 and npm >= 11.5.1
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
@@ -41,4 +41,4 @@ jobs:
 
       - name: Publish to npm
         if: steps.version_check.outputs.skip == 'false'
-        run: npm publish --provenance  # --provenance triggers OIDC token exchange — no NPM_TOKEN needed
+        run: npm publish  # --provenance is automatic with OIDC trusted publishing
