@@ -1,9 +1,10 @@
 # slidev-addon-chromadream
 
-A [Slidev](https://sli.dev) addon that gives you two components:
+A [Slidev](https://sli.dev) addon that gives you three features:
 
 - **`StepCode`** — highlights code words one step at a time on each slide click
 - **`two-cols-footer`** — a grid layout with a header, two columns, and a footer
+- **silent subtitle** — hides the subtitle on seriph-themed slides by writing `+SBE` beneath the heading
 
 ## Install
 
@@ -103,6 +104,21 @@ Right content here
 ::bottom::
 Footer content spanning the full width
 ````
+
+---
+
+## Silent subtitle
+
+On seriph-themed slides, a subtitle shows below the `# Title` heading. To hide it, put `+SBE` on its own line right after the heading:
+
+```md
+# My Slide Title
++SBE
+
+Regular slide content here...
+```
+
+The `+SBE` line will be replaced with a zero-width space, so the subtitle slot becomes invisible.
 
 ---
 
