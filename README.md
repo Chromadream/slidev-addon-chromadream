@@ -1,9 +1,9 @@
 # slidev-addon-chromadream
 
-A [Slidev](https://sli.dev) addon providing two reusable components:
+A [Slidev](https://sli.dev) addon that gives you two components:
 
-- **`StepCode`** — step-by-step code highlighting that advances on slide clicks
-- **`two-cols-footer`** — a grid layout with header, two columns, and a footer
+- **`StepCode`** — highlights code words one step at a time on each slide click
+- **`two-cols-footer`** — a grid layout with a header, two columns, and a footer
 
 ## Install
 
@@ -13,7 +13,7 @@ pnpm add slidev-addon-chromadream
 
 ## Setup
 
-Add to the frontmatter of your `slides.md`:
+Add this to your `slides.md` frontmatter:
 
 ```yaml
 ---
@@ -26,20 +26,19 @@ addons:
 
 ## `StepCode`
 
-Renders a syntax-highlighted code block where specific words become highlighted as you click through the slide.
+Shows a code block with syntax highlighting. Specific words become highlighted as you click through the slide.
 
 ### Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `code` | `string` | required | The code to display |
-| `lang` | `string` | `'sh'` | Shiki language identifier (e.g. `ts`, `bash`, `python`) |
-| `steps` | `string[][]` | required | Array of word arrays — each array is highlighted on the corresponding click |
+| `code` | `string` | required | The code to show |
+| `lang` | `string` | `'sh'` | Shiki language identifier (for example `ts`, `bash`, `python`) |
+| `steps` | `string[][]` | required | Array of word arrays. Each array is highlighted on a click. |
 
 ### Usage
 
-The component registers one click per step automatically, so there's no need to set
-`clicks` in the slide frontmatter:
+The component uses one click per step automatically. You do not need to set `clicks` in the slide frontmatter.
 
 ````md
 <script setup>
@@ -58,18 +57,17 @@ const steps = [
 <StepCode :code="code" :steps="steps" />
 ````
 
-Each click highlights the next set of words. Clicking past the last step advances to the
-next slide. If you want an extra step that clears all highlights and reverts to the raw
-code block, add `clicks: N` (with `N = steps.length + 1`) to the slide frontmatter to
-override the click count.
+Each click highlights the next set of words. After the last step, the next click advances to the next slide.
 
-Themes are automatically matched to the Slidev light/dark mode via Shiki's `vitesse-light` / `vitesse-dark`.
+If you want an extra step that clears all highlights, add `clicks: N` to the slide frontmatter. Set `N` to `steps.length + 1`. This value overrides the default click count.
+
+The component automatically picks the Shiki theme for the Slidev mode. In light mode it uses `vitesse-light`. In dark mode it uses `vitesse-dark`.
 
 ---
 
 ## `two-cols-footer` layout
 
-A CSS grid layout with four named areas: a full-width header, a two-column body, and a full-width footer.
+A CSS grid layout with four named areas. It has a full-width header, a two-column body, and a full-width footer.
 
 ### Slots
 
