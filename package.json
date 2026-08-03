@@ -7,9 +7,10 @@
     "slidev"
   ],
   "license": "MIT",
+  "author": "Jonathan Nicholas <jonathan.nicholas@protonmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Chromadream/slidev-addon-chromadream.git"
+    "url": "git+https://github.com/Chromadream/slidev-addon-chromadream.git"
   },
   "files": [
     "components/",
