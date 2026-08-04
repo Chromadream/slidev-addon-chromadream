@@ -187,7 +187,18 @@ hideImportedSlides: true
 
 Slides from `module-a.md` appear in the `<Toc />`. Slides from `module-b.md` are hidden because the import slide has `hideImportedSlides: true`.
 
-To hide one imported slide, set `hideInToc: true` in that slide's own frontmatter.
+To show a specific slide (for example the cover of a module), set `hideInToc: false` in that slide's frontmatter:
+
+```md
+<!-- module-b.md -->
+---
+hideInToc: false
+---
+
+# Module B
+
+Welcome to module B.
+```
 
 ## License
 
