@@ -4,8 +4,8 @@ A [Slidev](https://sli.dev) addon that gives you:
 
 - **`StepCode`** — highlights code words one step at a time on each slide click
 - **`two-cols-footer`** — a grid layout with a header, two columns, and a footer
-- **silent subtitle** — hides the subtitle on seriph-themed slides by writing `+SBE` beneath the heading
-- **TOC — hide imported slides** — slides imported via `src:` are automatically hidden from the table of contents
+- **silent subtitle** — hides the subtitle on seriph-themed slides. Write `+SBE` beneath the heading.
+- **TOC — hide imported slides** — slides imported with `src:` are visible in the Table of Contents unless you opt in to hide them.
 
 ## Install
 
@@ -28,7 +28,7 @@ addons:
 
 ## `StepCode`
 
-Shows a code block with syntax highlighting. Specific words become highlighted as you click through the slide.
+Shows a code block with syntax highlighting. Words become highlighted as you click through the slide.
 
 ### Props
 
@@ -40,7 +40,7 @@ Shows a code block with syntax highlighting. Specific words become highlighted a
 
 ### Usage
 
-The component uses one click per step automatically. You do not need to set `clicks` in the slide frontmatter.
+The component uses one click per step. You do not need to set `clicks` in the slide frontmatter.
 
 ````md
 <script setup>
@@ -61,9 +61,9 @@ const steps = [
 
 Each click highlights the next set of words. After the last step, the next click advances to the next slide.
 
-If you want an extra step that clears all highlights, add `clicks: N` to the slide frontmatter. Set `N` to `steps.length + 1`. This value overrides the default click count.
+An extra step that clears all highlights is possible. Add `clicks: N` to the slide frontmatter and set `N` to `steps.length + 1`. This value overrides the default click count.
 
-The component automatically picks the Shiki theme for the Slidev mode. In light mode it uses `vitesse-light`. In dark mode it uses `vitesse-dark`.
+The component picks the Shiki theme for the Slidev mode. In light mode it uses `vitesse-light`. In dark mode it uses `vitesse-dark`.
 
 ---
 
@@ -84,8 +84,8 @@ A CSS grid layout with four named areas. It has a full-width header, a two-colum
 
 | Prop | Type | Description |
 |------|------|-------------|
-| `class` | `string` | CSS classes applied to both column divs |
-| `layoutClass` | `string` | CSS classes applied to the container div |
+| `class` | `string` | CSS classes applied to the two columns |
+| `layoutClass` | `string` | CSS classes applied to the container |
 
 ### Usage
 
@@ -103,14 +103,14 @@ Left content here
 Right content here
 
 ::bottom::
-Footer content spanning the full width
+Footer content that spans the full width
 ````
 
 ---
 
 ## Silent subtitle
 
-On seriph-themed slides, a subtitle shows below the `# Title` heading. To hide it, put `+SBE` on its own line right after the heading:
+On seriph-themed slides, a subtitle shows below the `# Title` heading. To hide it, put `+SBE` on its own line directly after the heading:
 
 ```md
 # My Slide Title
@@ -119,13 +119,15 @@ On seriph-themed slides, a subtitle shows below the `# Title` heading. To hide i
 Regular slide content here...
 ```
 
-The `+SBE` line is replaced with a zero-width space, so the subtitle slot stays hidden.
+The addon replaces the `+SBE` line with a zero-width space. As a result, the subtitle slot stays hidden.
 
 ---
 
 ## TOC — hide imported slides
 
-When you split a deck across multiple files with `src:`, the imported slides are automatically hidden from the Table of Contents. No configuration needed.
+Imported slides are visible in the Table of Contents by default.
+
+To hide slides from a specific import, set `hideImportedSlides: true` on the importing slide:
 
 ```md
 # slides.md
@@ -144,10 +146,13 @@ src: ./module-a.md
 
 ---
 src: ./module-b.md
+hideImportedSlides: true
 ---
 ```
 
-Slides from `module-a.md` and `module-b.md` appear in the presentation but won't appear in the `<Toc />`. To let a specific imported slide show in the TOC, set `hideInToc: false` in that slide's frontmatter.
+Slides from `module-a.md` appear in the `<Toc />`. Slides from `module-b.md` are hidden because the import slide has `hideImportedSlides: true`.
+
+To hide one imported slide, set `hideInToc: true` in that slide's own frontmatter.
 
 ## License
 

@@ -23,13 +23,24 @@ hideInToc: true
 
 ---
 src: ./imported-demo.md
+hideImportedSlides: true
+---
+
+---
+src: ./imported-demo-visible.md
 ---
 
 ---
 
 # TOC — hide imported slides
 
-The two slides above ("Imported Slide Alpha" and "Imported Slide Beta") came from `imported-demo.md` via `src:`. When this addon is active they are automatically hidden from the TOC — flip back to the Table of Contents slide and you won't see them.
+Imported slides are visible in the TOC by default. Opt in per import with `hideImportedSlides: true`.
+
+Slides from `imported-demo.md` (Imported Slide Alpha & Beta) are **hidden** from the TOC because the import sets `hideImportedSlides: true`.
+
+Slides from `imported-demo-visible.md` (Imported Slide Charlie & Delta) **appear** in the TOC — no config needed.
+
+Flip back to the Table of Contents slide and only Charlie & Delta will be listed.
 
 ---
 
