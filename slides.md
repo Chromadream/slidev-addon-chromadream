@@ -196,6 +196,86 @@ The component automatically registers one click per step, so you don't need to s
 | `steps` | `string[][]` | — | Words to highlight per click step |
 
 ---
+
+# FlipSwitch component
+
+Switches between child panels on click. The flip waits until every `v-click` in the current
+child has fired before switching to the next one.
+
+---
+
+# FlipSwitch — live demo
+
+<script setup>
+const cli = `#!/usr/bin/env -S copilot agent \\
+  --allow-all \\
+  --model claude-sonnet-4.6 \\
+  -p /angular-v22-migration`
+
+const cliSteps = [
+  ['#!', '/usr/bin/env'],
+  ['-S', 'copilot', 'agent'],
+  ['--allow-all', '--model', 'claude-sonnet-4.6', '-p', '/angular-v22-migration'],
+]
+
+const cfg = `{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2024",
+    "module": "NodeNext"
+  }
+}`
+
+const cfgSteps = [
+  ['"strict"', 'true'],
+  ['"target"', '"ES2024"'],
+  ['"module"', '"NodeNext"'],
+]
+</script>
+
+<FlipSwitch>
+  <FlipSwitchItem>
+    <StepCode :code="cli" :steps="cliSteps" />
+  </FlipSwitchItem>
+  <FlipSwitchItem>
+    <StepCode :code="cfg" lang="json" :steps="cfgSteps" />
+  </FlipSwitchItem>
+</FlipSwitch>
+
+<div class="mt-4 text-sm text-gray-500">
+  Clicks 1–3 highlight the CLI command. Click 4 flips to the JSON config (shown as base code).
+  Clicks 5–7 highlight the config words. After click 7 the next click advances.
+</div>
+
+---
+
+# FlipSwitch — usage
+
+````md
+<FlipSwitch>
+  <FlipSwitchItem>
+    <v-clicks>
+      <li>Point A</li>
+      <li>Point B</li>
+    </v-clicks>
+  </FlipSwitchItem>
+  <FlipSwitchItem>
+    Another panel — shown after the last click of the first.
+  </FlipSwitchItem>
+</FlipSwitch>
+````
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `flip` | `boolean` | `true` | Enable the horizontal card-flip transition |
+| `duration` | `number` | `600` | Animation duration in milliseconds |
+
+**How clicks work** — Each `<FlipSwitchItem>` (except the first) adds one click for the
+flip. The first item is visible right away. The flip fires after the current item's
+last `v-click` and before the next item's content. You do not need to set `clicks`
+in the slide frontmatter.
+
+---
 layout: statement
 ---
 

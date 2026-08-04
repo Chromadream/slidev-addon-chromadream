@@ -3,6 +3,7 @@
 A [Slidev](https://sli.dev) addon that gives you:
 
 - **`StepCode`** — highlights code words one step at a time on each slide click
+- **`FlipSwitch`** — switches between child panels. The switch waits until each panel's v-clicks finish.
 - **`two-cols-footer`** — a grid layout with a header, two columns, and a footer
 - **silent subtitle** — hides the subtitle on seriph-themed slides. Write `+SBE` beneath the heading.
 - **TOC — hide imported slides** — slides imported with `src:` are visible in the Table of Contents unless you opt in to hide them.
@@ -23,6 +24,40 @@ addons:
   - slidev-addon-chromadream
 ---
 ```
+
+---
+
+## `FlipSwitch`
+
+A container that shows one child at a time. Each child lives in a `<FlipSwitchItem>`.
+The switch waits until all `v-click` steps in the current child are done. Then it flips
+to the next child. Each flip uses one click on its own.
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `flip` | `boolean` | `true` | Turn the horizontal card-flip animation on or off |
+| `duration` | `number` | `600` | Animation time in milliseconds |
+
+### Usage
+
+```md
+<FlipSwitch>
+  <FlipSwitchItem>
+    <v-clicks>
+      <li>First item</li>
+      <li>Second item</li>
+    </v-clicks>
+  </FlipSwitchItem>
+  <FlipSwitchItem>
+    This panel shows after the first panel is done.
+  </FlipSwitchItem>
+</FlipSwitch>
+```
+
+You do not need to set `clicks` in the slide frontmatter. The component counts the
+clicks automatically.
 
 ---
 
