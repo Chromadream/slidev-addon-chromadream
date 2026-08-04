@@ -1,10 +1,11 @@
 # slidev-addon-chromadream
 
-A [Slidev](https://sli.dev) addon that gives you three features:
+A [Slidev](https://sli.dev) addon that gives you:
 
 - **`StepCode`** — highlights code words one step at a time on each slide click
 - **`two-cols-footer`** — a grid layout with a header, two columns, and a footer
 - **silent subtitle** — hides the subtitle on seriph-themed slides by writing `+SBE` beneath the heading
+- **TOC — hide imported slides** — slides imported via `src:` are automatically hidden from the table of contents
 
 ## Install
 
@@ -118,9 +119,35 @@ On seriph-themed slides, a subtitle shows below the `# Title` heading. To hide i
 Regular slide content here...
 ```
 
-The `+SBE` line will be replaced with a zero-width space, so the subtitle slot becomes invisible.
+The `+SBE` line is replaced with a zero-width space, so the subtitle slot stays hidden.
 
 ---
+
+## TOC — hide imported slides
+
+When you split a deck across multiple files with `src:`, the imported slides are automatically hidden from the Table of Contents. No configuration needed.
+
+```md
+# slides.md
+
+---
+addons:
+  - slidev-addon-chromadream
+---
+
+# Table of Contents
+<Toc />
+
+---
+src: ./module-a.md
+---
+
+---
+src: ./module-b.md
+---
+```
+
+Slides from `module-a.md` and `module-b.md` appear in the presentation but won't appear in the `<Toc />`. To let a specific imported slide show in the TOC, set `hideInToc: false` in that slide's frontmatter.
 
 ## License
 

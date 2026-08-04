@@ -1,7 +1,7 @@
 {
   "name": "slidev-addon-chromadream",
-  "version": "0.3.0",
-  "description": "Slidev addon providing StepCode (step-by-step code highlighting) and two-cols-footer layout",
+  "version": "0.4.0",
+  "description": "Slidev addon with reusable components, layouts, and tools for building technical presentations",
   "keywords": [
     "slidev-addon",
     "slidev"

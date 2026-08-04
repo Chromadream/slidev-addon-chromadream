@@ -1,6 +1,6 @@
 ---
 addons:
-  - ./
+  - '@/'
 title: slidev-addon-chromadream
 theme: seriph
 background: https://cover.sli.dev
@@ -20,6 +20,16 @@ hideInToc: true
 # Table of Contents
 
 <Toc />
+
+---
+src: ./imported-demo.md
+---
+
+---
+
+# TOC — hide imported slides
+
+The two slides above ("Imported Slide Alpha" and "Imported Slide Beta") came from `imported-demo.md` via `src:`. When this addon is active they are automatically hidden from the TOC — flip back to the Table of Contents slide and you won't see them.
 
 ---
 
