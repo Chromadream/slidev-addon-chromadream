@@ -36,11 +36,9 @@ src: ./imported-demo-visible.md
 
 Imported slides are visible in the TOC by default. Opt in per import with `hideImportedSlides: true`.
 
-Slides from `imported-demo.md` (Imported Slide Alpha & Beta) are **hidden** from the TOC because the import sets `hideImportedSlides: true`.
+Slides from `imported-demo.md` are imported with `hideImportedSlides: true`. Beta is hidden from the TOC. Alpha overrides with `hideInToc: false` and stays visible.
 
-Slides from `imported-demo-visible.md` (Imported Slide Charlie & Delta) **appear** in the TOC — no config needed.
-
-Flip back to the Table of Contents slide and only Charlie & Delta will be listed.
+Slides from `imported-demo-visible.md` (Imported Slide Charlie & Delta) **appear** in the TOC — they are imported without `hideImportedSlides`.
 
 ---
 

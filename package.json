@@ -1,6 +1,6 @@
 {
   "name": "slidev-addon-chromadream",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Slidev addon with reusable components, layouts, and tools for building technical presentations",
   "keywords": [
     "slidev-addon",
