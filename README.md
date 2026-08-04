@@ -6,7 +6,7 @@ A [Slidev](https://sli.dev) addon that gives you:
 - **`FlipSwitch`** — switches between child panels. The switch waits until each panel's v-clicks finish.
 - **`two-cols-footer`** — a grid layout with a header, two columns, and a footer
 - **silent subtitle** — hides the subtitle on seriph-themed slides. Write `+SBE` beneath the heading.
-- **TOC — hide imported slides** — slides imported with `src:` are visible in the Table of Contents unless you opt in to hide them.
+- **TOC — hide imported slides** — slides imported with `src:` appear in the Table of Contents unless you choose to hide them.
 
 ## Install
 
@@ -37,7 +37,7 @@ to the next child. Each flip uses one click on its own.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `flip` | `boolean` | `true` | Turn the horizontal card-flip animation on or off |
+| `flip` | `boolean` | `true` | Enable or disable the horizontal card-flip animation |
 | `duration` | `number` | `600` | Animation time in milliseconds |
 
 ### Usage
@@ -72,6 +72,8 @@ Shows a code block with syntax highlighting. Words become highlighted as you cli
 | `code` | `string` | required | The code to show |
 | `lang` | `string` | `'sh'` | Shiki language identifier (for example `ts`, `bash`, `python`) |
 | `steps` | `string[][]` | required | Array of word arrays. Each array is highlighted on a click. |
+| `scrollable` | `boolean` | `false` | Constrain height and lock vertical scroll until all steps are revealed. Auto-scrolls to keep highlights visible during reveal. |
+| `maxHeight` | `string` | auto | CSS max-height for the code block (for example `'400px'`, `'60vh'`). When you do not set this prop and the `scrollable` prop is `true`, the component calculates the value from the slide layout. |
 
 ### Usage
 

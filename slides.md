@@ -171,6 +171,121 @@ const clearSteps = [
 layout: default
 ---
 
+# StepCode — scrollable
+
+Longer code blocks can overflow the slide. Add `scrollable` to constrain the height.
+Vertical scroll is **locked** while steps are revealing (auto-scrolls to keep highlights
+visible). Once all steps are done, scroll **unlocks** so you can read the full code.
+
+<script setup>
+const longCode = `#!/usr/bin/env bash
+set -euo pipefail
+
+APP_NAME="stellar-deploy"
+VERSION="3.2.1"
+NAMESPACE="production"
+
+check_prerequisites() {
+  command -v kubectl >/dev/null 2>&1 || { echo "kubectl is required"; exit 1; }
+  command -v helm >/dev/null   2>&1 || { echo "helm is required";    exit 1; }
+  command -v jq >/dev/null     2>&1 || { echo "jq is required";      exit 1; }
+}
+
+validate_config() {
+  local cfg="$1"
+  [[ -f "$cfg" ]] || { echo "config file $cfg not found"; exit 2; }
+  jq empty "$cfg" || { echo "invalid JSON in $cfg"; exit 2; }
+}
+
+build_image() {
+  local tag="$1"
+  echo ">>> BUILD [tag=$tag] <<<"
+  docker build \\
+    --build-arg APP_NAME="$APP_NAME" \\
+    --build-arg VERSION="$VERSION" \\
+    -t "registry.example.com/$APP_NAME:$tag" .
+  docker push "registry.example.com/$APP_NAME:$tag"
+}
+
+run_migrations() {
+  local env="$1"
+  echo ">>> MIGRATE [env=$env] <<<"
+  kubectl exec -n "$NAMESPACE" deploy/migrator -- \\
+    /app/migrate --env "$env" --confirm
+}
+
+deploy_helm_chart() {
+  local tag="$1" env="$2"
+  echo ">>> DEPLOY [env=$env, tag=$tag] <<<"
+  helm upgrade --install "$APP_NAME" ./charts/app \\
+    --namespace "$NAMESPACE" \\
+    --set "image.tag=$tag" \\
+    --set "env=$env" \\
+    --set "replicas=3" \\
+    --timeout 5m \\
+    --wait
+}
+
+smoke_test() {
+  local env="$1"
+  echo ">>> SMOKE [env=$env] <<<"
+  local url="https://$APP_NAME.$env.example.com/health"
+  for i in {1..30}; do
+    curl -sf "$url" && return 0
+    echo "  attempt $i/30 — waiting..."
+    sleep 2
+  done
+  echo "smoke test failed after 30 attempts"
+  return 1
+}
+
+rollback() {
+  local prev_tag="$1"
+  echo ">>> ROLLBACK [tag=$prev_tag] <<<"
+  helm rollback "$APP_NAME" --namespace "$NAMESPACE"
+  echo "deployment rolled back to $prev_tag"
+}
+
+main() {
+  check_prerequisites
+  validate_config "./deploy/config.json"
+
+  local new_tag="\${1:-$VERSION}"
+  local env="\${2:-staging}"
+
+  build_image "$new_tag"
+  run_migrations "$env"
+  deploy_helm_chart "$new_tag" "$env"
+  smoke_test "$env" || { rollback "$new_tag"; exit 1; }
+
+  echo "=== DEPLOY SUCCESSFUL (env=$env, tag=$new_tag) ==="
+}
+
+main "$@"`
+
+const longSteps = [
+  ['set -euo pipefail'],
+  ['check_prerequisites'],
+  ['validate_config'],
+  ['build_image'],
+  ['smoke_test()'],
+  ['main "$@"']
+]
+</script>
+
+<StepCode :code="longCode" :steps="longSteps" scrollable />
+
+<div class="mt-4 text-sm text-gray-500">
+  Clicks 1–5 highlight each function definition top-to-bottom:
+  <code>set -euo pipefail</code> → <code>check_prerequisites</code> →
+  <code>validate_config</code> → <code>build_image</code> → <code>smoke_test</code>.
+  On click 6, scroll unlocks so you can read the full script.
+</div>
+
+---
+layout: default
+---
+
 # StepCode — usage
 
 ````vue
