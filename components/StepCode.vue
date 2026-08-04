@@ -50,41 +50,48 @@ const stepOffset = computed(() => {
   return (ctx?.current ?? 0) - 1
 })
 
-const baseHtml = ref('')
+const renderedHtml = ref<string[]>([])
 
-watch(() => props.code, async (code) => {
-  baseHtml.value = await codeToHtml(code.trim(), {
-    lang: props.lang ?? 'sh',
+watch(() => [props.code, props.lang, props.steps] as const, async ([code, lang, steps]) => {
+  const source = code.trim()
+  const options = {
+    lang: lang ?? 'sh',
     themes: {
       dark: 'vitesse-dark',
       light: 'vitesse-light',
     },
     defaultColor: false,
-  })
-}, { immediate: true })
+  } as const
 
-function wrapWords(html: string, words: string[]): string {
-  let result = html
-  for (const word of words) {
-    const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    // Match the word when it appears as the entire text node between > and <
-    result = result.replace(
-      new RegExp(`>([^<]*)(${escaped})([^<]*)<`, 'g'),
-      (_, pre, match, post) =>
-        `>${pre}<mark class="step-highlight">${match}</mark>${post}<`,
-    )
-  }
-  return result
-}
+  renderedHtml.value = await Promise.all([
+    codeToHtml(source, options),
+    ...steps.map(words => codeToHtml(source, {
+      ...options,
+      decorations: words.flatMap((word) => {
+        const decorations = []
+        if (!word)
+          return decorations
+
+        let start = source.indexOf(word)
+        while (start >= 0) {
+          decorations.push({
+            start,
+            end: start + word.length,
+            properties: { class: 'step-highlight' },
+          })
+          start = source.indexOf(word, start + word.length)
+        }
+        return decorations
+      }),
+    })),
+  ])
+}, { deep: true, immediate: true })
 
 const html = computed(() => {
   const offset = stepOffset.value
   if (offset < 0)
-    return baseHtml.value
-  const wordSet = props.steps[offset]
-  if (!wordSet)
-    return baseHtml.value
-  return wrapWords(baseHtml.value, wordSet)
+    return renderedHtml.value[0] ?? ''
+  return renderedHtml.value[offset + 1] ?? renderedHtml.value[0] ?? ''
 })
 </script>
 
@@ -95,7 +102,7 @@ const html = computed(() => {
 </template>
 
 <style>
-.step-code :deep(pre.shiki) {
+.step-code pre.shiki {
   background: var(--slidev-code-background) !important;
   padding: 1rem;
   border-radius: 0.5rem;
@@ -107,7 +114,7 @@ const html = computed(() => {
   line-height: var(--slidev-code-line-height, 1.5);
 }
 
-.step-code :deep(.step-highlight) {
+.step-code .step-highlight {
   background-color: rgba(255, 200, 50, 0.25);
   border: 1px solid rgba(255, 200, 50, 0.5);
   border-radius: 3px;
