@@ -309,6 +309,92 @@ The component automatically registers one click per step, so you don't need to s
 | `code` | `string` | — | The code block content |
 | `lang` | `string` | `'sh'` | Shiki language identifier |
 | `steps` | `string[][]` | — | Words to highlight per click step |
+| `at` | `string \| number` | `1` | Click start position — defaults to absolute `1` (shared with sibling clicks). Use `"+1"` for a sequential range after preceding content |
+
+---
+layout: default
+---
+
+# StepCode — shared clicks with v-clicks
+
+<v-clicks>
+
+- First explanation point
+- Second explanation point
+- Third explanation point
+
+</v-clicks>
+
+<script setup>
+const sharedCode = `const a = 1
+const b = 2
+const c = 3`
+
+const sharedSteps = [
+  ['a', '1'],
+  ['b', '2'],
+  ['c', '3'],
+]
+</script>
+
+<StepCode :code="sharedCode" lang="ts" :steps="sharedSteps" />
+
+<div class="mt-4 text-sm text-gray-500">
+  At click 1, the first bullet <b>and</b> the first code step highlight together.
+  No <code>at</code> prop needed on <code>&lt;v-clicks&gt;</code>.
+</div>
+
+---
+layout: default
+---
+
+# StepCode — at="+1" (sequential)
+
+<v-clicks>
+
+- This bullet fires after the code (click 3)
+- This bullet fires after the code (click 4)
+
+</v-clicks>
+
+<script setup>
+const seqCode = `echo hello
+echo world`
+const seqSteps = [
+  ['echo', 'hello'],
+  ['echo', 'world'],
+]
+</script>
+
+<StepCode :code="seqCode" :steps="seqSteps" at="+1" />
+
+<div class="mt-4 text-sm text-gray-500">
+  With <code>at="+1"</code>, StepCode leads (clicks 1–2) and the bullets follow (clicks 3–4).
+  When StepCode appears <b>after</b> <code>&lt;v-clicks&gt;</code> in the template, its clicks fire first.
+</div>
+
+---
+layout: default
+---
+
+# StepCode — at="5" (absolute)
+
+<script setup>
+const absCode = `npm install
+npm run build
+npm test`
+
+const absSteps = [
+  ['npm', 'install'],
+  ['npm', 'run', 'build'],
+]
+</script>
+
+<StepCode :code="absCode" lang="sh" :steps="absSteps" :at="5" />
+
+<div class="mt-4 text-sm text-gray-500">
+  With <code>:at="5"</code>, the base code shows for clicks 0–4 and step 1 highlights at click 5.
+</div>
 
 ---
 

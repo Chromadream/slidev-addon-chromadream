@@ -1,12 +1,12 @@
 # slidev-addon-chromadream
 
-A [Slidev](https://sli.dev) addon that gives you:
+A [Slidev](https://sli.dev) addon with these components:
 
 - **`StepCode`** — highlights code words one step at a time on each slide click
-- **`FlipSwitch`** — switches between child panels. The switch waits until each panel's v-clicks finish.
+- **`FlipSwitch`** — shows one child panel at a time and flips after each panel's v-clicks finish
 - **`two-cols-footer`** — a grid layout with a header, two columns, and a footer
 - **silent subtitle** — hides the subtitle on seriph-themed slides. Write `+SBE` beneath the heading.
-- **TOC — hide imported slides** — slides imported with `src:` appear in the Table of Contents unless you choose to hide them.
+- **TOC — hide imported slides** — slides imported with `src:` show in the Table of Contents unless you hide them
 
 ## Install
 
@@ -72,6 +72,7 @@ Shows a code block with syntax highlighting. Words become highlighted as you cli
 | `code` | `string` | required | The code to show |
 | `lang` | `string` | `'sh'` | Shiki language identifier (for example `ts`, `bash`, `python`) |
 | `steps` | `string[][]` | required | Array of word arrays. Each array is highlighted on a click. |
+| `at` | `string \| number` | `1` | Click start position. The default absolute value `1` shares clicks with sibling `<v-clicks>`. Use `"+1"` for a separate sequential range. |
 | `scrollable` | `boolean` | `false` | Constrain height and lock vertical scroll until all steps are revealed. Auto-scrolls to keep highlights visible during reveal. |
 | `maxHeight` | `string` | auto | CSS max-height for the code block (for example `'400px'`, `'60vh'`). When you do not set this prop and the `scrollable` prop is `true`, the component calculates the value from the slide layout. |
 
@@ -96,11 +97,13 @@ const steps = [
 <StepCode :code="code" :steps="steps" />
 ````
 
-Each click highlights the next set of words. After the last step, the next click advances to the next slide.
+By default, `StepCode` shares clicks with sibling `<v-clicks>`. At click 1, the first bullet and the first code step highlight at the same time. No `at` prop is needed on `<v-clicks>`.
 
-An extra step that clears all highlights is possible. Add `clicks: N` to the slide frontmatter and set `N` to `steps.length + 1`. This value overrides the default click count.
+After the last step, the next click advances to the next slide.
 
-The component picks the Shiki theme for the Slidev mode. In light mode it uses `vitesse-light`. In dark mode it uses `vitesse-dark`.
+You can add a clear-step by setting `clicks: N` in the slide frontmatter with `N` equal to `steps.length + 1`. One click after the last step clears all highlights and shows the raw code. The next click then advances.
+
+The component picks the Shiki theme for the Slidev mode. It uses `vitesse-light` in light mode and `vitesse-dark` in dark mode.
 
 ---
 

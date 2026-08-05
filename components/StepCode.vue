@@ -25,6 +25,7 @@ const props = defineProps<{
   code: string
   lang?: string
   steps: string[][]
+  at?: string | number
   scrollable?: boolean
   maxHeight?: string
 }>()
@@ -38,7 +39,7 @@ const elKey = `slidev-addon-chromadream-step-code-${stepCodeIdCounter++}`
 const ctx = clicksContext?.value
 let clicksInfo: ClicksInfo | null = null
 if (ctx && props.steps.length > 0) {
-  clicksInfo = ctx.calculateSince('+1', props.steps.length)
+  clicksInfo = ctx.calculateSince(props.at ?? 1, props.steps.length)
   if (clicksInfo)
     ctx.register(elKey, clicksInfo)
 }
