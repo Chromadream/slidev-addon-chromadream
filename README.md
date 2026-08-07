@@ -7,6 +7,7 @@ A [Slidev](https://sli.dev) addon with these components:
 - **`two-cols-footer`** — a grid layout with a header, two columns, and a footer
 - **silent subtitle** — hides the subtitle on seriph-themed slides. Write `+SBE` beneath the heading.
 - **TOC — hide imported slides** — slides imported with `src:` show in the Table of Contents unless you hide them
+- **iframe print fallback** — replaces every iframe with a clickable URL link during PDF export
 
 ## Install
 
@@ -204,6 +205,23 @@ hideInToc: false
 
 Welcome to module B.
 ```
+
+## iframe print fallback
+
+During PDF export or browser print mode, the addon hides every iframe. It shows the iframe URL as a clickable link instead. You do not need to set any configuration options.
+
+### How it works
+
+The addon finds all `<iframe>` elements on the page. It hides each iframe and shows a card in its place. The card contains the URL as a clickable link. PDF viewers render these links as clickable.
+
+### Testing
+
+```bash
+slidev slides.md --export
+slidev slides.md --export --per-slide
+```
+
+In development mode (`slidev slides.md`), iframes render as usual. The fallback only activates during PDF export and browser print mode.
 
 ## License
 
