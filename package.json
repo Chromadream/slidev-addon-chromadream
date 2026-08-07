@@ -27,10 +27,12 @@
   "devDependencies": {
     "@slidev/cli": "latest",
     "@slidev/theme-seriph": "^0.25.0",
+    "playwright-chromium": "^1.62.1",
     "vue": "^3.5.0"
   },
   "scripts": {
     "dev": "slidev slides.md",
-    "build": "slidev build slides.md"
+    "build": "slidev build slides.md",
+    "export": "slidev export slides.md"
   }
 }
