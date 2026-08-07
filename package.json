@@ -7,6 +7,7 @@
     "slidev"
   ],
   "license": "MIT",
+  "packageManager": "pnpm@11.20.0",
   "author": "Jonathan Nicholas <jonathan.nicholas@protonmail.com>",
   "repository": {
     "type": "git",
@@ -34,5 +35,5 @@
     "dev": "slidev slides.md",
     "build": "slidev build slides.md",
     "export": "slidev export slides.md"
-  }
+  },
 }

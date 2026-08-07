@@ -13,19 +13,17 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v7
         with:
-          version: latest
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24  # trusted publishing requires Node >= 22.14.0 and npm >= 11.5.1
+          node-version: 24
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
-      - run: pnpm install
+      - run: corepack enable pnpm
+
+      - run: pnpm install --frozen-lockfile
 
       - name: Check if version is already published
         id: version_check
