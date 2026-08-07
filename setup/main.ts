@@ -11,18 +11,6 @@ function isPrintRoute(router: Router): boolean {
 function createFallbackNode(iframe: HTMLIFrameElement): HTMLElement {
   const url = iframe.src || iframe.getAttribute('src') || ''
 
-  const wrapper = document.createElement('div')
-  wrapper.setAttribute('data-chromadream-fallback', '')
-  wrapper.style.boxSizing = 'border-box'
-  wrapper.style.display = 'flex'
-  wrapper.style.alignItems = 'center'
-  wrapper.style.justifyContent = 'center'
-  wrapper.style.width = '100%'
-  wrapper.style.height = '100%'
-  wrapper.style.border = '2px dashed var(--slidev-theme-primary, #888)'
-  wrapper.style.borderRadius = '8px'
-  wrapper.style.background = 'var(--slidev-slide-container-background, rgba(0,0,0,0.03))'
-
   const link = document.createElement('a')
   link.href = url
   link.textContent = url
@@ -31,13 +19,10 @@ function createFallbackNode(iframe: HTMLIFrameElement): HTMLElement {
   link.style.color = 'var(--slidev-theme-primary, #3b82f6)'
   link.style.textDecoration = 'underline'
   link.style.wordBreak = 'break-all'
-  link.style.textAlign = 'center'
-  link.style.padding = '1em'
   link.setAttribute('target', '_blank')
   link.setAttribute('rel', 'noopener noreferrer')
 
-  wrapper.appendChild(link)
-  return wrapper
+  return link
 }
 
 function replaceIframe(iframe: HTMLIFrameElement) {
@@ -51,11 +36,7 @@ function replaceIframe(iframe: HTMLIFrameElement) {
   iframe.setAttribute(PATCHED_ATTR, '')
   iframe.style.display = 'none'
 
-  const parentStyle = window.getComputedStyle(parent)
   const fallback = createFallbackNode(iframe)
-  fallback.style.width = parentStyle.width
-  fallback.style.height = parentStyle.height
-
   parent.insertBefore(fallback, iframe)
 }
 

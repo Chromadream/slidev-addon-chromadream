@@ -485,8 +485,7 @@ During PDF export, the addon hides every iframe and shows its URL as a clickable
 Run `slidev slides.md --export` to see it.
 
 ---
-
-layout: iframe
+layout: iframe-right
 url: https://sli.dev
 ---
 
