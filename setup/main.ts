@@ -2,6 +2,7 @@ import type { Router } from 'vue-router'
 import { defineAppSetup } from '@slidev/types'
 
 const PATCHED_ATTR = 'data-chromadream-print-patched'
+const LINK_PATCHED_ATTR = 'data-chromadream-link-patched'
 
 function isPrintRoute(router: Router): boolean {
   const route = router.currentRoute.value
@@ -47,6 +48,34 @@ function patchAllIframes() {
   })
 }
 
+function shouldPatchLink(link: HTMLAnchorElement): boolean {
+  if (link.hasAttribute(LINK_PATCHED_ATTR))
+    return false
+  const href = link.getAttribute('href') || ''
+  if (!href || href.startsWith('#'))
+    return false
+  if (link.textContent?.trim() === href.trim())
+    return false
+  if (link.closest('code, pre, nav'))
+    return false
+  return true
+}
+
+function patchLink(link: HTMLAnchorElement) {
+  if (!shouldPatchLink(link))
+    return
+  link.setAttribute(LINK_PATCHED_ATTR, '')
+  const href = link.href || link.getAttribute('href') || ''
+  link.textContent = `${link.textContent?.trim()} (${href})`
+}
+
+function patchAllLinks() {
+  document.querySelectorAll(`a[href]:not([${LINK_PATCHED_ATTR}])`).forEach((el) => {
+    if (el instanceof HTMLAnchorElement)
+      patchLink(el)
+  })
+}
+
 let observer: MutationObserver | null = null
 
 function startObserving() {
@@ -58,10 +87,17 @@ function startObserving() {
         if (node instanceof HTMLIFrameElement) {
           replaceIframe(node)
         }
+        else if (node instanceof HTMLAnchorElement) {
+          patchLink(node)
+        }
         else if (node instanceof HTMLElement) {
           node.querySelectorAll(`iframe:not([${PATCHED_ATTR}])`).forEach((el) => {
             if (el instanceof HTMLIFrameElement)
               replaceIframe(el)
+          })
+          node.querySelectorAll(`a[href]:not([${LINK_PATCHED_ATTR}])`).forEach((el) => {
+            if (el instanceof HTMLAnchorElement)
+              patchLink(el)
           })
         }
       }
@@ -80,6 +116,7 @@ export default defineAppSetup(({ router }) => {
     if (isPrintRoute(router)) {
       requestAnimationFrame(() => {
         patchAllIframes()
+        patchAllLinks()
         startObserving()
       })
     }
@@ -91,6 +128,7 @@ export default defineAppSetup(({ router }) => {
   if (isPrintRoute(router)) {
     requestAnimationFrame(() => {
       patchAllIframes()
+      patchAllLinks()
       startObserving()
     })
   }

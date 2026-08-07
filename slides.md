@@ -477,6 +477,9 @@ last `v-click` and before the next item's content. You do not need to set `click
 in the slide frontmatter.
 
 ---
+layout: iframe-right
+url: https://sli.dev
+---
 
 # iframe print fallback
 
@@ -484,9 +487,6 @@ During PDF export, the addon hides every iframe and shows its URL as a clickable
 
 Run `slidev slides.md --export` to see it.
 
----
-layout: iframe-right
-url: https://sli.dev
 ---
 
 # iframe print fallback — usage
@@ -499,6 +499,30 @@ No setup needed. The addon patches every iframe during export:
 - Does nothing in development mode
 
 Export your deck and all iframes become clickable URL links.
+
+---
+
+# Markdown link print fallback
+
+During PDF export, each markdown link shows its URL in parentheses after the link text.
+
+For example:
+- A regular link — [Slidev](https://sli.dev)
+- A link with inline code — [`npm install`](https://npmjs.com)
+- A link to docs — [Shiki](https://shiki.style)
+
+Run `slidev slides.md --export` to see the result.
+
+---
+
+# Markdown link print fallback — usage
+
+No setup needed. The addon patches every markdown link during export:
+- Internal fragment links (`href="#"`) are kept as they are
+- Links inside code blocks are kept as they are
+- Each link shows as `text (url)` with the full link clickable
+
+Works in all export modes. Does nothing in development mode.
 
 ---
 layout: statement

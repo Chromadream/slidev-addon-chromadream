@@ -8,6 +8,7 @@ A [Slidev](https://sli.dev) addon with these components:
 - **silent subtitle** — hides the subtitle on seriph-themed slides. Write `+SBE` beneath the heading.
 - **TOC — hide imported slides** — slides imported with `src:` show in the Table of Contents unless you hide them
 - **iframe print fallback** — replaces every iframe with a clickable URL link during PDF export
+- **markdown link print fallback** — shows each markdown link as `text (url)` during PDF export
 
 ## Install
 
@@ -222,6 +223,29 @@ slidev slides.md --export --per-slide
 ```
 
 In development mode (`slidev slides.md`), iframes render as usual. The fallback only activates during PDF export and browser print mode.
+
+## Markdown link print fallback
+
+During PDF export or browser print mode, the addon changes each markdown link. It adds the URL in parentheses after the link text.
+
+For example, a link written as `[Slidev](https://sli.dev)` becomes **Slidev (https://sli.dev)** in the export. The whole text stays clickable — it is still one link element.
+
+### How it works
+
+The addon finds all markdown links on each slide. It appends ` (url)` to the link text so the URL is visible in the exported PDF.
+
+Links that are not changed:
+- Internal fragment links (`href="#"`) — these stay as they are
+- Links inside code blocks — these stay as they are
+
+### Testing
+
+```bash
+slidev slides.md --export
+slidev slides.md --export --per-slide
+```
+
+In development mode, links render as usual. The fallback only activates during PDF export and browser print mode.
 
 ## License
 
