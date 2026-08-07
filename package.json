@@ -35,5 +35,5 @@
     "dev": "slidev slides.md",
     "build": "slidev build slides.md",
     "export": "slidev export slides.md"
-  },
+  }
 }
